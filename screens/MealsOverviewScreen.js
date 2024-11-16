@@ -28,12 +28,19 @@ export default function MealsOverviewScreen({ route, navigation }) {
         keyExtractor={(item) => item.id}
         renderItem={(itemData) => {
           return (
+            //Eğer bir bileşen, başka bir bileşenin alt bileşeni olarak tanımlandıysa,
+            //(MealsOverviewScreen altında MealItem renderlanması gibi) navigation ve
+            //route prop'ları otomatik olarak bu bileşene geçilmez. Alt bileşenler doğrudan
+            //bir navigatör tarafından yönetilmediği için, bu prop'ları üst bileşenden manuel
+            //olarak geçirmen gerekir. Alternatif olarak, useNavigation hook'u kullanılabilir.
             <MealItem
+              id={itemData.item.id}
               title={itemData.item.title}
               imageUrl={itemData.item.imageUrl}
               complexity={itemData.item.complexity}
               duration={itemData.item.duration}
               affordability={itemData.item.affordability}
+              navigation={navigation}
             />
           );
         }}
