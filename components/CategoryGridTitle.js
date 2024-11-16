@@ -29,10 +29,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "black",
     marginTop: 30,
+    elevation:4
   },
   button: {
     flex: 1,
   },
+  
   innerContainer: {
     flex: 1,
     borderRadius: 8,
