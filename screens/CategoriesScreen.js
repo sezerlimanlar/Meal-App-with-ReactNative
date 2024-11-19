@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
 import React from "react";
 import { CATEGORIES } from "../data/dummy-data";
 import CategoryGridTile from "../components/CategoryGridTile";
-import { useNavigation } from "@react-navigation/native";
 
 export default function CategoriesScreen({ navigation }) {
   return (

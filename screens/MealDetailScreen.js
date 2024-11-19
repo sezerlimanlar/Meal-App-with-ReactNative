@@ -1,38 +1,47 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-  Button,
-} from "react-native";
+import { useContext, useLayoutEffect } from "react";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 
-//import MealDetails from "../components/MealDetails";
+import IconButton from "../components/IconButton";
+import List from "../components/MealDetail/List";
+import Subtitle from "../components/MealDetail/Subtitle";
 import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MetalDetails";
-import Subtitle from "../components/MealDetail/Subtitle";
-import List from "../components/MealDetail/List";
-import { useLayoutEffect } from "react";
-import IconButton from "../components/IconButton";
+import { useFavoritesContext } from "../store/context/favorites-context";
 
 function MealDetailScreen({ route, navigation }) {
   const mealId = route.params.mealId;
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const { addFavorite, removeFavorite, ids } = useFavoritesContext();
 
-  function headerButtonPressHandler() {
-    console.log("pressed");
+  const measlIsfavorite = ids?.includes(mealId);
+
+  function changeFavoriteStatusHandler() {
+    if (measlIsfavorite) {
+      removeFavorite(mealId);
+    } else {
+      addFavorite(mealId);
+    }
   }
+
+  console.log(ids);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <IconButton icon="star" color="gold" onPress={headerButtonPressHandler} />;
+        return (
+          <IconButton
+            icon={measlIsfavorite ? "star" : "star-outline"}
+            color="gold"
+            onPress={changeFavoriteStatusHandler}
+          />
+        );
       },
     });
-  }, [headerButtonPressHandler, navigation]);
+  }, [navigation, changeFavoriteStatusHandler]);
 
   return (
+
     <ScrollView style={styles.rootContainer}>
       <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
       <Text style={styles.title}>{selectedMeal.title}</Text>
@@ -46,7 +55,8 @@ function MealDetailScreen({ route, navigation }) {
         <View style={styles.listContainer}>
           <Subtitle>Ingredients</Subtitle>
           <List data={selectedMeal.ingredients} />
-          <Subtitle>Steps</Subtitle> <List data={selectedMeal.steps} />
+          <Subtitle>Steps</Subtitle>
+          <List data={selectedMeal.steps} />
         </View>
       </View>
     </ScrollView>
@@ -57,7 +67,7 @@ export default MealDetailScreen;
 
 const styles = StyleSheet.create({
   rootContainer: {
-    marginBottom: 32,
+    marginBottom: 120,
   },
   image: {
     width: "100%",
